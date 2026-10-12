@@ -1,13 +1,19 @@
 // Minimal app-shell service worker for the Kuusemets PWA prototype.
 // Caches same-origin app assets only; map/geodata services and vector tiles stay network-only.
-const CACHE = 'kuusemets-shell-v1'
+const CACHE = 'kuusemets-shell-v2'
 
 self.addEventListener('install', () => {
   self.skipWaiting()
 })
 
 self.addEventListener('activate', (event) => {
-  event.waitUntil(self.clients.claim())
+  event.waitUntil(
+    (async () => {
+      const keys = await caches.keys()
+      await Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k)))
+      await self.clients.claim()
+    })(),
+  )
 })
 
 self.addEventListener('fetch', (event) => {
