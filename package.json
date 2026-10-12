@@ -20,6 +20,7 @@
     "@mapbox/vector-tile": "^3.0.0",
     "@sveltejs/vite-plugin-svelte": "^5.0.0",
     "@tsconfig/svelte": "^5.0.4",
+    "@types/node": "^26.6.5",
     "geojson-vt": "^5.0.4",
     "pbf": "^5.1.2",
     "puppeteer-core": "^25.13.0",

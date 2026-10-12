@@ -52,11 +52,11 @@ async function report(label) {
 }
 await report('low-zoom')
 
-await page.evaluate(() => window.__map?.jumpTo({ center: [24.8856, 59.19], zoom: 14 }))
+await page.evaluate(() => window.__map?.jumpTo({ center: [26.6032, 58.4286], zoom: 14 }))
 await new Promise((r) => setTimeout(r, 9000))
 await report('high-zoom')
 
-await page.evaluate(() => window.__map?.jumpTo({ center: [24.8856, 59.19], zoom: 17 }))
+await page.evaluate(() => window.__map?.jumpTo({ center: [26.6032, 58.4286], zoom: 17 }))
 await new Promise((r) => setTimeout(r, 9000))
 await report('max-zoom')
 

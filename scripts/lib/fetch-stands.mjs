@@ -7,7 +7,9 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 export const CACHE = join(__dirname, '..', '.cache', 'stands.json')
 
 const WFS = 'https://gsavalik.envir.ee/geoserver/metsaregister/ows'
-const FILTER = "peapuuliik_kood='KU'"
+// Spruce-dominant stands that are government-owned (state / public-law / municipal),
+// excluding private ownership (Eraomand) and unknown.
+const FILTER = "peapuuliik_kood='KU' AND omandivorm_kood IN ('R','T','M','A','KK')"
 const PAGE = 100000
 const KEEP = ['id', 'pindala', 'peapuuliik_kood', 'kasvukoht_kood', 'boniteedi_kood', 'arengukl_kood', 'keskm_vanus', 'korgus', 'kuivendatud']
 

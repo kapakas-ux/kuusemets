@@ -28,9 +28,14 @@
   let mapEl: HTMLDivElement
   let map: Map | undefined
 
-  let labels = $state<{ species: Record<string, string>; site: Record<string, string> }>({
+  let labels = $state<{
+    species: Record<string, string>
+    site: Record<string, string>
+    ownership: Record<string, string>
+  }>({
     species: {},
     site: {},
+    ownership: {},
   })
   let selected = $state<StandProps | null>(null)
   let selectedId = $state<number | string | null>(null)
@@ -74,6 +79,10 @@
   function siteLabel(code?: string) {
     if (!code) return '—'
     return labels.site[code] ?? code
+  }
+  function ownershipLabel(code?: string) {
+    if (!code) return '—'
+    return labels.ownership[code] ?? code
   }
 
   function updateAccuracyRadius() {
@@ -464,6 +473,10 @@
       <div class="field">
         <dt>{t('drained')}</dt>
         <dd>{selected.kuivendatud ? t('yes') : t('no')}</dd>
+      </div>
+      <div class="field span2">
+        <dt>{t('ownership')}</dt>
+        <dd>{ownershipLabel(selected.omandivorm_kood)}</dd>
       </div>
     </dl>
     {#if selectedPoint}

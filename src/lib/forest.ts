@@ -8,7 +8,10 @@ export const SPRUCE_TILES = `${import.meta.env.BASE_URL}tiles/{z}/{x}/{y}.pbf`
 export const BASEMAP_ATTRIBUTION = '© OpenStreetMap contributors'
 export const DATA_ATTRIBUTION = 'Metsaregister, Keskkonnaagentuur (CC BY 4.0)'
 
-/** Fetch spruce-dominant stands intersecting a lon/lat box (used for high-zoom views). */
+/** Government-owned stands only (state / public-law / municipal); no private forests. */
+export const OWNERSHIP_FILTER = "omandivorm_kood IN ('R','T','M','A','KK')"
+
+/** Fetch spruce-dominant, government-owned stands intersecting a lon/lat box. */
 export async function fetchStandsInBounds(
   west: number,
   south: number,
@@ -16,7 +19,7 @@ export async function fetchStandsInBounds(
   north: number,
   limit = 8000,
 ): Promise<GeoJSON.FeatureCollection | null> {
-  const cql = `peapuuliik_kood='KU' AND BBOX(shape,${west},${south},${east},${north},'EPSG:4326')`
+  const cql = `peapuuliik_kood='KU' AND ${OWNERSHIP_FILTER} AND BBOX(shape,${west},${south},${east},${north},'EPSG:4326')`
   const url =
     `${WFS}?service=WFS&version=2.0.0&request=GetFeature` +
     `&typeNames=metsaregister:eraldis&outputFormat=application/json` +
@@ -33,6 +36,7 @@ export async function fetchStandsInBounds(
 export interface ClassifierMaps {
   species: Record<string, string>
   site: Record<string, string>
+  ownership: Record<string, string>
 }
 
 export async function fetchClassifier(layer: string): Promise<Record<string, string>> {
@@ -57,11 +61,12 @@ export async function fetchClassifier(layer: string): Promise<Record<string, str
 }
 
 export async function loadClassifiers(): Promise<ClassifierMaps> {
-  const [species, site] = await Promise.all([
+  const [species, site, ownership] = await Promise.all([
     fetchClassifier('kl_puuliik'),
     fetchClassifier('kl_kasvukoht'),
+    fetchClassifier('kl_omandivorm'),
   ])
-  return { species, site }
+  return { species, site, ownership }
 }
 
 export interface StandProps {
@@ -74,6 +79,7 @@ export interface StandProps {
   keskm_vanus?: number | null
   korgus?: number | null
   kuivendatud?: boolean
+  omandivorm_kood?: string
   [k: string]: unknown
 }
 
