@@ -1,0 +1,32 @@
+{
+  "name": "kuusemets",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview --host",
+    "check": "svelte-check --tsconfig ./tsconfig.json",
+    "data:tiles": "node --max-old-space-size=6144 scripts/build-tiles.mjs",
+    "data:overview": "node scripts/build-overview.mjs",
+    "verify:tiles": "node scripts/verify-tiles.mjs",
+    "smoke": "node scripts/smoke.mjs"
+  },
+  "dependencies": {
+    "maplibre-gl": "^6.14.0"
+  },
+  "devDependencies": {
+    "@mapbox/vector-tile": "^3.0.0",
+    "@sveltejs/vite-plugin-svelte": "^5.0.0",
+    "@tsconfig/svelte": "^5.0.4",
+    "geojson-vt": "^5.0.4",
+    "pbf": "^5.1.2",
+    "puppeteer-core": "^25.13.0",
+    "svelte": "^5.0.0",
+    "svelte-check": "^4.1.0",
+    "typescript": "^5.7.0",
+    "vite": "^6.0.0",
+    "vt-pbf": "^3.1.3"
+  }
+}
